@@ -5,124 +5,128 @@ ini_set( 'display_errors', 'On' );
 
 include dirname( __DIR__ ) . '/vendor/autoload.php';
 
+use \Niirrty\Observer\IObserver;
+use \Niirrty\Observer\IObservable;
+use \Niirrty\Observer\Observable;
+
 
 /**
  * Defines a class that …
  */
-class MyObserver implements \Niirrty\Observer\IObserver
+class MyObserver implements IObserver
 {
 
 
-   /**
-    * Is called by an observed observable to inform the observer about an update.
-    *
-    * @param \Niirrty\Observer\IObservable $observable The observed observable that should be updated
-    * @param mixed                         $extras     Optional data from observed
-    */
-   public function onUpdate( \Niirrty\Observer\IObservable $observable, $extras = null )
-   {
-      echo '- Observable change property ';
-      if ( \is_array( $extras ) && isset( $extras[ 'property' ] ) )
-      {
-         echo '"' . $extras[ 'property' ], '" ';
-      }
-      echo "to a new value\n";
-   }
+    /**
+     * Is called by an observed observable to inform the observer about an update.
+     *
+     * @param IObservable $observable The observed observable that should be updated
+     * @param mixed       $extras     Optional data from observed
+     */
+    public function onUpdate( IObservable $observable, $extras = null )
+    {
+        echo '- Observable change property ';
+        if ( \is_array( $extras ) && isset( $extras[ 'property' ] ) )
+        {
+            echo '"' . $extras[ 'property' ], '" ';
+        }
+        echo "to a new value\n";
+    }
 
-   /**
-    * Is called by an observable to inform, that the observed defined observable will now inform the
-    * observer about something.
-    *
-    * @param \Niirrty\Observer\IObservable $observable
-    * @return mixed
-    */
-   public function onSubscribe( \Niirrty\Observer\IObservable $observable )
-   {
-      echo "- Im now subscribed to a new observable\n";
-      return true;
-   }
+    /**
+     * Is called by an observable to inform, that the observed defined observable will now inform the
+     * observer about something.
+     *
+     * @param IObservable $observable
+     * @return mixed
+     */
+    public function onSubscribe( IObservable $observable )
+    {
+        echo "- Im now subscribed to a new observable\n";
+        return true;
+    }
 
-   /**
-    * Is called by an observable to inform it that the observed defined observable will not longer inform the
-    * observer about something.
-    *
-    * @param \Niirrty\Observer\IObservable $observable
-    * @return mixed
-    */
-   public function onUnsubscribe( \Niirrty\Observer\IObservable $observable )
-   {
-      echo "- Im now unsubcribed to a observable\n";
-      return true;
-   }
+    /**
+     * Is called by an observable to inform it that the observed defined observable will not longer inform the
+     * observer about something.
+     *
+     * @param IObservable $observable
+     * @return mixed
+     */
+    public function onUnsubscribe( IObservable $observable )
+    {
+        echo "- Im now unsubcribed to a observable\n";
+        return true;
+    }
 
 
 }
 
-class MyObservable extends \Niirrty\Observer\Observable
+class MyObservable extends Observable
 {
 
-   private $_name;
-   private $_value;
+    private $_name;
+    private $_value;
 
-   /**
-    * …
-    *
-    * @param  mixed $name
-    * @return MyObservable
-    */
-   public function setName( $name )
-   {
+    /**
+     * …
+     *
+     * @param  mixed $name
+     * @return MyObservable
+     */
+    public function setName( $name )
+    {
 
-      if ( $this->_name === $name ) { return $this; }
+        if ( $this->_name === $name ) { return $this; }
 
-      $this->_name = $name;
+        $this->_name = $name;
 
-      $this->notify( [ 'property' => 'name' ] );
+        $this->notify( [ 'property' => 'name' ] );
 
-      return $this;
+        return $this;
 
-   }
+    }
 
-   /**
-    * …
-    *
-    * @param  mixed $value
-    * @return MyObservable
-    */
-   public function setValue( $value )
-   {
+    /**
+     * …
+     *
+     * @param  mixed $value
+     * @return MyObservable
+     */
+    public function setValue( $value )
+    {
 
-      if ( $this->_value === $value ) { return $this; }
+        if ( $this->_value === $value ) { return $this; }
 
-      $this->_value = $value;
+        $this->_value = $value;
 
-      $this->notify( [ 'property' => 'value' ] );
+        $this->notify( [ 'property' => 'value' ] );
 
-      return $this;
+        return $this;
 
-   }
+    }
 
-   /**
-    * @return mixed
-    */
-   public function getValue()
-   {
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
 
-      return $this->_value;
+        return $this->_value;
 
-   }
+    }
 
-   public function __construct( $name, $value )
-   {
-      parent::__construct();
-      $this->_name  = $name;
-      $this->_value = $value;
-   }
+    public function __construct( $name, $value )
+    {
+        parent::__construct();
+        $this->_name  = $name;
+        $this->_value = $value;
+    }
 
-   public function getName()
-   {
-      return $this->_name;
-   }
+    public function getName()
+    {
+        return $this->_name;
+    }
 
 }
 

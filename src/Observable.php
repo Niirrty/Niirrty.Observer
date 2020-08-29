@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright  (c) 2016, Niirrty
+ * @copyright      © 2017-2020, Niirrty
  * @package        Niirrty\Observer
  * @since          2017-11-01
- * @version        0.1.0
+ * @version        0.3.0
  */
 
 
@@ -21,190 +21,190 @@ abstract class Observable implements IObservable
 {
 
 
-   // <editor-fold desc="// – – –   P R O T E C T E D   F I E L D S   – – – – – – – – – – – – – – – – – – – – – –">
+    // <editor-fold desc="// – – –   P R O T E C T E D   F I E L D S   – – – – – – – – – – – – – – – – – – – – – –">
 
-   /**
-    * All registered observers.
-    *
-    * @type IObserver[]
-    */
-   protected $_observers;
+    /**
+     * All registered observers.
+     *
+     * @type IObserver[]
+     */
+    protected $_observers;
 
-   /**
-    * Stores if something is changed
-    *
-    * @type boolean
-    */
-   protected $_changed;
+    /**
+     * Stores if something is changed
+     *
+     * @type boolean
+     */
+    protected $_changed;
 
-   protected $_cache;
+    protected $_cache;
 
-   // </editor-fold>
-
-
-   // <editor-fold desc="// – – –   P R O T E C T E D   C O N S T R U C T O R   – – – – – – – – – – – – – – – – –">
-
-   /**
-    * Observable constructor.
-    */
-   protected function __construct()
-   {
-
-      $this->_observers = [];
-      $this->_changed   = false;
-      $this->_cache     = [];
-
-   }
-
-   // </editor-fold>
+    // </editor-fold>
 
 
-   // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
+    // <editor-fold desc="// – – –   P R O T E C T E D   C O N S T R U C T O R   – – – – – – – – – – – – – – – – –">
 
-   /**
-    * Subscribe a new observer to this observable implementation.
-    *
-    * @param  \Niirrty\Observer\IObserver $observer
-    * @return \Niirrty\Observer\IObservable
-    */
-   public function subscribe( IObserver $observer ) : IObservable
-   {
+    /**
+     * Observable constructor.
+     */
+    protected function __construct()
+    {
 
-      if ( ! \in_array( $observer, $this->_observers, true ) )
-      {
-         $this->_observers[] = $observer;
-      }
+        $this->_observers = [];
+        $this->_changed   = false;
+        $this->_cache     = [];
 
-      return $this;
+    }
 
-   }
+    // </editor-fold>
 
-   /**
-    * Deletes the subscription of the defined observer (Observer will not longer be informed about something)
-    *
-    * If no observer is defined all observers will be removed.
-    *
-    * @param \Niirrty\Observer\IObserver|null $observer
-    * @return \Niirrty\Observer\IObservable
-    */
-   public function unsubscribe( ?IObserver $observer = null ) : IObservable
-   {
 
-      for ( $i = 0, $c = \count( $this->_observers ); $i < $c; $i++)
-      {
-         if ( $observer === $this->_observers[ $i ] )
-         {
-            unset( $this->_observers[ $i ] );
-         }
-      }
+    // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
 
-      $this->_observers = array_values( $this->_observers );
+    /**
+     * Subscribe a new observer to this observable implementation.
+     *
+     * @param IObserver $observer
+     * @return IObservable
+     */
+    public function subscribe( IObserver $observer ) : IObservable
+    {
 
-      return $this;
+        if ( ! \in_array( $observer, $this->_observers, true ) )
+        {
+            $this->_observers[] = $observer;
+        }
 
-   }
+        return $this;
 
-   /**
-    * Notify all subscribed observers
-    *
-    * @param  mixed $extras
-    * @return \Niirrty\Observer\IObservable
-    */
-   public function notify( $extras = null ) : IObservable
-   {
+    }
 
-      if ( 1 < \count( $this->_cache ) )
-      {
-         $this->_cache[] = $extras;
-      }
-      else
-      {
-         $this->_cache = $extras;
-      }
+    /**
+     * Deletes the subscription of the defined observer (Observer will not longer be informed about something)
+     *
+     * If no observer is defined all observers will be removed.
+     *
+     * @param IObserver|null $observer
+     * @return IObservable
+     */
+    public function unsubscribe( ?IObserver $observer = null ) : IObservable
+    {
 
-      foreach ( $this->_observers as $ob )
-      {
-         $ob->onUpdate( $this, $this->_cache );
-      }
+        for ( $i = 0, $c = \count( $this->_observers ); $i < $c; $i++)
+        {
+            if ( $observer === $this->_observers[ $i ] )
+            {
+                unset( $this->_observers[ $i ] );
+            }
+        }
 
-      $this->_cache = [];
+        $this->_observers = array_values( $this->_observers );
 
-      return $this;
+        return $this;
 
-   }
+    }
 
-   /**
-    * Notify all subscribed observers
-    *
-    * @param  mixed $extras
-    * @return \Niirrty\Observer\IObservable
-    */
-   public function notifyCached( $extras = null ) : IObservable
-   {
+    /**
+     * Notify all subscribed observers
+     *
+     * @param  mixed $extras
+     * @return IObservable
+     */
+    public function notify( $extras = null ) : IObservable
+    {
 
-      $this->_cache[] = $extras;
+        if ( 1 < \count( $this->_cache ) )
+        {
+            $this->_cache[] = $extras;
+        }
+        else
+        {
+            $this->_cache = $extras;
+        }
 
-      return $this;
+        foreach ( $this->_observers as $ob )
+        {
+            $ob->onUpdate( $this, $this->_cache );
+        }
 
-   }
+        $this->_cache = [];
 
-   /**
-    * Gets if something is changed.
-    *
-    * @return bool
-    */
-   public function isChanged() : bool
-   {
+        return $this;
 
-      return $this->_changed;
+    }
 
-   }
+    /**
+     * Notify all subscribed observers
+     *
+     * @param  mixed $extras
+     * @return IObservable
+     */
+    public function notifyCached( $extras = null ) : IObservable
+    {
 
-   /**
-    * Resets the changed state to FALSE
-    */
-   public function clearChangedState()
-   {
+        $this->_cache[] = $extras;
 
-      $this->_changed = false;
+        return $this;
 
-   }
+    }
 
-   /**
-    * Sets the changed state to TRUE.
-    */
-   public function setChanged()
-   {
+    /**
+     * Gets if something is changed.
+     *
+     * @return bool
+     */
+    public function isChanged() : bool
+    {
 
-      $this->_changed = true;
+        return $this->_changed;
 
-   }
+    }
 
-   /**
-    * Returns if one or more observers are subscribed.
-    *
-    * @return bool
-    */
-   public function hasObservers() : bool
-   {
+    /**
+     * Resets the changed state to FALSE
+     */
+    public function clearChangedState()
+    {
 
-      return 0 < $this->countObservers();
+        $this->_changed = false;
 
-   }
+    }
 
-   /**
-    * Gets the amount of registered observers.
-    *
-    * @return int
-    */
-   public function countObservers() : int
-   {
+    /**
+     * Sets the changed state to TRUE.
+     */
+    public function setChanged()
+    {
 
-      return \count( $this->_observers );
+        $this->_changed = true;
 
-   }
+    }
 
-   // </editor-fold>
+    /**
+     * Returns if one or more observers are subscribed.
+     *
+     * @return bool
+     */
+    public function hasObservers() : bool
+    {
+
+        return 0 < $this->countObservers();
+
+    }
+
+    /**
+     * Gets the amount of registered observers.
+     *
+     * @return int
+     */
+    public function countObservers() : int
+    {
+
+        return \count( $this->_observers );
+
+    }
+
+    // </editor-fold>
 
 
 }
