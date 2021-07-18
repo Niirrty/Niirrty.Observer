@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2017-2020, Niirrty
+ * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Observer
  * @since          2017-11-01
- * @version        0.3.0
+ * @version        0.4.0
  */
 
 
@@ -21,28 +21,28 @@ abstract class Observable implements IObservable
 {
 
 
-    // <editor-fold desc="// – – –   P R O T E C T E D   F I E L D S   – – – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P R O T E C T E D   F I E L D S   – – – – – – – – – – – – – – – – – – – – – –
 
     /**
      * All registered observers.
      *
      * @type IObserver[]
      */
-    protected $_observers;
+    protected array $_observers;
 
     /**
      * Stores if something is changed
      *
      * @type boolean
      */
-    protected $_changed;
+    protected bool $_changed;
 
-    protected $_cache;
+    protected array $_cache;
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P R O T E C T E D   C O N S T R U C T O R   – – – – – – – – – – – – – – – – –">
+    #region // – – –   P R O T E C T E D   C O N S T R U C T O R   – – – – – – – – – – – – – – – – –
 
     /**
      * Observable constructor.
@@ -56,10 +56,10 @@ abstract class Observable implements IObservable
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
-    // <editor-fold desc="// – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –">
+    #region // – – –   P U B L I C   M E T H O D S   – – – – – – – – – – – – – – – – – – – – – – – –
 
     /**
      * Subscribe a new observer to this observable implementation.
@@ -107,10 +107,11 @@ abstract class Observable implements IObservable
     /**
      * Notify all subscribed observers
      *
-     * @param  mixed $extras
+     * @param mixed|null $extras
+     *
      * @return IObservable
      */
-    public function notify( $extras = null ) : IObservable
+    public function notify( mixed $extras = null ) : IObservable
     {
 
         if ( 1 < \count( $this->_cache ) )
@@ -136,10 +137,11 @@ abstract class Observable implements IObservable
     /**
      * Notify all subscribed observers
      *
-     * @param  mixed $extras
+     * @param mixed|null $extras
+     *
      * @return IObservable
      */
-    public function notifyCached( $extras = null ) : IObservable
+    public function notifyCached( mixed $extras = null ) : IObservable
     {
 
         $this->_cache[] = $extras;
@@ -204,7 +206,7 @@ abstract class Observable implements IObservable
 
     }
 
-    // </editor-fold>
+    #endregion
 
 
 }

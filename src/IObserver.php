@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2017-2020, Niirrty
+ * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Observer
  * @since          2017-11-01
- * @version        0.3.0
+ * @version        0.4.0
  */
 
 
@@ -27,9 +27,9 @@ interface IObserver
      * Is called by an observed observable to inform the observer about an update.
      *
      * @param IObservable $observable The observed observable that should be updated
-     * @param mixed       $extras     Optional data from observed
+     * @param mixed|null  $extras     Optional data from observed
      */
-    public function onUpdate( IObservable $observable, $extras = null );
+    public function onUpdate( IObservable $observable, mixed $extras = null );
 
     /**
      * Is called by an observable to inform, that the observed defined observable will now inform the
@@ -38,7 +38,7 @@ interface IObserver
      * @param IObservable $observable
      * @return mixed
      */
-    public function onSubscribe( IObservable $observable );
+    public function onSubscribe( IObservable $observable ): mixed;
 
     /**
      * Is called by an observable to inform it that the observed defined observable will not longer inform the
@@ -47,7 +47,7 @@ interface IObserver
      * @param IObservable $observable
      * @return mixed
      */
-    public function onUnsubscribe( IObservable $observable );
+    public function onUnsubscribe( IObservable $observable ): mixed;
 
 
 }

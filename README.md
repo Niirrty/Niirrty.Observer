@@ -13,8 +13,8 @@ or inside the `composer.json`:
 ```json
 {
    "require": {
-      "php": ">=7.1",
-      "niirrty/niirrty.observer": "~0.3"
+      "php": ">=8.0",
+      "niirrty/niirrty.observer": "~0.4"
    }
 }
 ```

@@ -1,10 +1,10 @@
 <?php
 /**
  * @author         Ni Irrty <niirrty+code@gmail.com>
- * @copyright      © 2017-2020, Niirrty
+ * @copyright      © 2017-2021, Niirrty
  * @package        Niirrty\Observer
  * @since          2017-11-01
- * @version        0.3.0
+ * @version        0.4.0
  */
 
 
@@ -44,18 +44,20 @@ interface IObservable
     /**
      * Notify all listening observers.
      *
-     * @param  mixed $extras
+     * @param mixed|null $extras
+     *
      * @return IObservable
      */
-    public function notify( $extras = null ) : IObservable;
+    public function notify( mixed $extras = null ) : IObservable;
 
     /**
      * Notify all listening observers. But here the observers are only notified if `notify(…)` is called after.
      *
-     * @param  mixed $extras
+     * @param mixed|null $extras
+     *
      * @return IObservable
      */
-    public function notifyCached( $extras = null ) : IObservable;
+    public function notifyCached( mixed $extras = null ) : IObservable;
 
     /**
      * Gets if something is changed.

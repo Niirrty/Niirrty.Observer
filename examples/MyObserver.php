@@ -21,9 +21,9 @@ class MyObserver implements IObserver
      * Is called by an observed observable to inform the observer about an update.
      *
      * @param IObservable $observable The observed observable that should be updated
-     * @param mixed       $extras     Optional data from observed
+     * @param mixed|null  $extras     Optional data from observed
      */
-    public function onUpdate( IObservable $observable, $extras = null )
+    public function onUpdate( IObservable $observable, mixed $extras = null )
     {
         echo '- Observable change property ';
         if ( \is_array( $extras ) && isset( $extras[ 'property' ] ) )
@@ -40,7 +40,7 @@ class MyObserver implements IObserver
      * @param IObservable $observable
      * @return mixed
      */
-    public function onSubscribe( IObservable $observable )
+    public function onSubscribe( IObservable $observable ) : mixed
     {
         echo "- Im now subscribed to a new observable\n";
         return true;
@@ -53,7 +53,7 @@ class MyObserver implements IObserver
      * @param IObservable $observable
      * @return mixed
      */
-    public function onUnsubscribe( IObservable $observable )
+    public function onUnsubscribe( IObservable $observable ) : mixed
     {
         echo "- Im now unsubcribed to a observable\n";
         return true;
